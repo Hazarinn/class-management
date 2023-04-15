@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,6 +28,7 @@ public class StudentService {
     private AddressRepository addressRepository;
 
     public List<Student> searchAll(){
+
         return studentRepository.findAll();
     }
 
@@ -37,6 +39,14 @@ public class StudentService {
     }
 
     public Student createStudent(Student student){
+        List<Discipline> disciplines = student.getDisciplines();
+        student.setDisciplines(new ArrayList<>());
+
+        for (Discipline discipline : disciplines) {
+            discipline.setStudent(student);
+            student.getDisciplines().add(discipline);
+        }
+
         return studentRepository.save(student);
     }
 
@@ -58,7 +68,10 @@ public class StudentService {
     public void addDisciplineToStudent(Long studentId, Long disciplineId) {
         var student = searchById(studentId);
         var discipline = disciplineRepository.findById(disciplineId).orElseThrow(() -> new ResourceNotFoundException("Discipline not found"));
-        student.getDisciplines().add(discipline);
+        if(student.getDisciplines().isEmpty()){
+            student.getDisciplines().add(discipline);
+        }
+        student.getDisciplines();
         createStudent(student);
     }
 

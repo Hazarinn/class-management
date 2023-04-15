@@ -1,12 +1,17 @@
 package com.example.crudAluno.alunoController;
 
+
 import com.example.crudAluno.entities.Discipline;
 import com.example.crudAluno.entities.Student;
+
+
+import com.example.crudAluno.services.AddressService;
 import com.example.crudAluno.services.DisciplineService;
 import com.example.crudAluno.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -15,7 +20,6 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
-
 
 
 
@@ -30,8 +34,10 @@ public class StudentController {
         return studentService.searchAll();
     }
 
+
     @PostMapping
     public Student registerStudent(@RequestBody Student student){
+
 
 
         return studentService.createStudent(student);
@@ -59,7 +65,7 @@ public class StudentController {
     }
 
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public void deleteStudent(@PathVariable("id") Long id){
         studentService.deleteStudent(id);
     }

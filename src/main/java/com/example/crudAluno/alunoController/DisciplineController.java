@@ -41,7 +41,7 @@ public class DisciplineController {
     }
 
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public void deleteDiscipline(@PathVariable("id") Long id){
         disciplineService.deleteStudent(id);
     }

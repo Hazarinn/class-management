@@ -22,6 +22,5 @@ public class Address {
     private String zipCode;
     private String country;
 
-    @OneToOne
-    private Student student;
+
 }

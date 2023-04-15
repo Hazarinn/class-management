@@ -1,5 +1,7 @@
 package com.example.crudAluno.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,7 +25,9 @@ public class Discipline {
 
 
     @ManyToOne
-    @JoinColumn(name = "student_id")
+    @JoinColumn(name="student_id")
     private Student student;
+
+
 
 }

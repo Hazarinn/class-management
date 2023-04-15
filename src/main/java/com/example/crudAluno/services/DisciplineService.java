@@ -16,6 +16,9 @@ public class DisciplineService {
     @Autowired
     private DisciplineRepository disciplineRepository;
 
+    @Autowired
+    private StudentRepository studentRepository;
+
     public List<Discipline> searchAll(){
         return disciplineRepository.findAll();
     }
@@ -46,4 +49,9 @@ public class DisciplineService {
     public void deleteStudent(Long id){
         disciplineRepository.deleteDiscipline(id);
     }
+
+
+
+
+
 }
