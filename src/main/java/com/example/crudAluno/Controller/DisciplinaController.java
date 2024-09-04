@@ -8,12 +8,15 @@ import com.example.crudAluno.services.DisciplinaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.http.HttpStatus.*;
+
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -25,26 +28,18 @@ public class DisciplinaController {
     private DisciplinaService disciplinaService;
 
 
-
-
-
     @GetMapping("/{id}")
-    public ResponseEntity<Disciplina> getById(@PathVariable("id") Long id){
+    public ResponseEntity<Disciplina> getById(@PathVariable("id") Long id) {
 
-        Disciplina disc = disciplinaService.searchById(id);
+        Optional<Disciplina> optionalDisciplina = disciplinaService.searchById(id);
 
-        if (disc != null) {
-            return new ResponseEntity<>(disc, OK);
-
-        }
-
-        return  new ResponseEntity<>( NOT_FOUND);
-
+        return optionalDisciplina.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 
     }
 
+
     @GetMapping
-    public ResponseEntity<List<Disciplina>> getAll(){
+    public ResponseEntity<List<Disciplina>> getAll() {
         List<Disciplina> disciplinas = disciplinaService.searchAll();
 
 
@@ -54,27 +49,29 @@ public class DisciplinaController {
     }
 
     @PostMapping
-    public ResponseEntity<Disciplina> registerDiscipline(@RequestBody Disciplina disciplina){
+    public ResponseEntity<Disciplina> registerDiscipline(@RequestBody Disciplina disciplina) {
         Disciplina disc = disciplinaService.createDisciplina(disciplina);
 
-           return new ResponseEntity<>(disc, CREATED);
+        return new ResponseEntity<>(disc, CREATED);
 
     }
 
     @PutMapping("/{id}")
-    public Disciplina alterDisciplina(@PathVariable("id") Long id, @RequestBody Disciplina disciplina){
-        return disciplinaService.updateDisciplina(id, disciplina);
+    public ResponseEntity<Disciplina> alterDisciplina(@PathVariable("id") Long id, @RequestBody Disciplina disciplina) {
+        Disciplina disciplinaAtualizada = disciplinaService.updateDisciplina(id, disciplina);
+
+        return ResponseEntity.ok(disciplinaAtualizada);
+
+
     }
 
 
     @DeleteMapping("/{id}")
-    public void deleteDiscipline(@PathVariable("id") Long id){
+    public ResponseEntity<Void> deleteDisciplina(@PathVariable("id") Long id) {
 
+        disciplinaService.searchById(id);
 
-
-            disciplinaService.deleteEstudante(id);
-
-
+        return ResponseEntity.status(NOT_FOUND).build();
     }
 
 }

@@ -4,6 +4,7 @@ package com.example.crudAluno.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.*;
+import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class Estudante {
 
     @OneToMany(mappedBy = "estudante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnoreProperties("estudante")
-    private List<Disciplina> disciplinas = new ArrayList<>();
+    private List<Disciplina> disciplinas;
 
 
 

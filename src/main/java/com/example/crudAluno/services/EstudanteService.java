@@ -9,8 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
-@RestController("estudante")
+
 @Service
 public class EstudanteService {
 
@@ -21,9 +22,9 @@ public class EstudanteService {
         return estudanteRepository.findAll();
     }
 
-    public Estudante buscaPeloId(Long id) {
-        return estudanteRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Aluno não encontrado para o id: %d", id)));
+    public Optional<Estudante> buscaPeloId(Long id) {
+        return estudanteRepository.findById(id);
+
     }
 
     public Estudante createEstudante(Estudante estudante) {
@@ -31,21 +32,24 @@ public class EstudanteService {
     }
 
     public Estudante estudanteUpdate(Long id, Estudante est) {
-        Estudante estudante1 = buscaPeloId(id);
-        estudante1.setNome(est.getNome());
-        estudante1.setEndereco(est.getEndereco());
-        estudante1.setEmail(est.getEmail());
-        estudante1.setCpf(est.getCpf());
-        estudante1.setTelefone(est.getTelefone());
-        estudante1.setDisciplinas(est.getDisciplinas());
-        return estudanteRepository.save(estudante1);
-    }
 
-    public void deleteEstudante(Long id) {
-        if (estudanteRepository.existsById(id)) {
-            estudanteRepository.deleteById(id); // Método correto para deletar por ID
-        } else {
-            throw new ResourceNotFoundException(String.format("Aluno não encontrado para o id: %d", id));
+        Estudante estudanteAtualizado = buscaPeloId(id).orElseThrow(() -> new RuntimeException(String.format("Estudante não encontrado para o id: %d", id)));
+        estudanteAtualizado.setNome(est.getNome());
+        estudanteAtualizado.setEndereco(est.getEndereco());
+        estudanteAtualizado.setEmail(est.getEmail());
+        estudanteAtualizado.setCpf(est.getCpf());
+        estudanteAtualizado.setTelefone(est.getTelefone());
+        estudanteAtualizado.setDisciplinas(est.getDisciplinas());
+        return estudanteRepository.save(estudanteAtualizado);
+  }
+
+        public void deletaEstudante (Long id) {
+            if (estudanteRepository.existsById(id)) {
+                estudanteRepository.deleteById(id); // Método correto para deletar por ID
+            } else {
+                throw new ResourceNotFoundException(String.format("Aluno não encontrado para o id: %d", id));
+            }
+
         }
-    }
-}
+        }
+
