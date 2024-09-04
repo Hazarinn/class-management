@@ -2,33 +2,34 @@ package com.example.crudAluno.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
+
 import lombok.*;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "Students")
-@Entity(name = "Student")
+@Table(name = "Estudantes")
+@Entity(name = "Estudante")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of ="id")
-public class Student {
+public class Estudante {
 
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String nome;
     private String email;
-    private String telephone;
-    private String registration;
+    private String telefone;
+    private String cpf;
 
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JsonIgnoreProperties("student")
-    private List<Discipline> disciplines = new ArrayList<>();
+    @OneToMany(mappedBy = "estudante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("estudante")
+    private List<Disciplina> disciplinas = new ArrayList<>();
 
 
 
@@ -36,7 +37,7 @@ public class Student {
 
 
     @OneToOne(cascade = CascadeType.ALL)
-    private Address address;
+    private Endereco endereco;
 
 
 
